@@ -9,3 +9,6 @@ __pycache__/
 
 # Ignorar arquivos de configuração do VS Code
 .vscode/
+
+*.spec
+*.ico
