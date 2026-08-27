@@ -1,0 +1,11 @@
+# Ignorar pastas criadas pelo PyInstaller
+/build/
+/dist/
+
+# Ignorar cache do Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignorar arquivos de configuração do VS Code
+.vscode/
