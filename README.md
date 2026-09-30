@@ -20,7 +20,7 @@ Um aplicativo em Python com interface gráfica (Tkinter) para gerar senhas forte
     1. Acesse o executável na pasta "dist" no diretório
 
 ## Como Usar
-1. Escolha o tamanho da senha (16 a 30 caracteres)
+1. Escolha o tamanho da senha (12 a 30 caracteres)
 
 2. Geração automática de senhas com letras, números e símbolos
 
