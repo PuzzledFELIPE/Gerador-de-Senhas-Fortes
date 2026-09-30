@@ -1,3 +1,4 @@
+import re
 import string
 import random
 import tkinter as tk
@@ -20,7 +21,7 @@ titulo.pack(pady=15)
 label = tk.Label(root, text="Selecione abaixo quantos caracteres você deseja em sua senha: ")
 label.pack()
 
-horizontal_scale = tk.Scale(root, from_=16, to=30, orient="horizontal")
+horizontal_scale = tk.Scale(root, from_=12, to=30, orient="horizontal")
 horizontal_scale.pack()
 
 text_widget = tk.Text(root, height=1, width=34)
@@ -44,9 +45,13 @@ def get_scale_value():
 #========================================================
 def generate_random():
     
-    possible_characters = list(string.ascii_letters 
-    + string.digits 
-    + string.punctuation)
+    COMMON_SPECIALS = "!@#$%&*?"
+
+    possible_characters = list(
+        string.ascii_letters +
+        string.digits +
+        COMMON_SPECIALS
+    )
     password_characters = [random.choice(possible_characters) for _ in range(get_scale_value())]
     return "".join(password_characters)
 #========================================================
@@ -54,24 +59,25 @@ def generate_random():
 #Validação de caracteres da senha
 #========================================================
 def is_valid(password):
-    return (
-        any(c.islower() for c in password) and
-        any(c.isupper() for c in password) and
-        any(c.isdigit() for c in password) and
-        any(c in string.punctuation for c in password) and
-        not password.isalpha() and
-        not password.isdigit()
+    pattern = (
+        r"^(?=.*[a-z])"      # pelo menos uma minúscula
+        r"(?=.*[A-Z])"       # pelo menos uma maiúscula
+        r"(?=.*\d)"          # pelo menos um número
+        r"(?=(?:.*[!@#$%&*?]){4,})"  # pelo menos quatro caracteres especiais permitidos
+        r"[A-Za-z\d!@#$%&*?]+$"
     )
+
+    return re.match(pattern, password) is not None
 #========================================================
 
 #Validação final e recall da geração até uma senha válida ser gerada
 #========================================================
 def validate_password():
     try:
-        if int(get_scale_value()) < 16:
+        if int(get_scale_value()) < 12:
             raise LengthError
     except LengthError:
-        messagebox.showerror("Erro", "The minimun length is 16, please enter a 16 or greater length")
+        messagebox.showerror("Erro", "The minimun length is 12, please enter a 12 or greater length")
     else:
         password = None        
         while True:
@@ -87,7 +93,7 @@ def validate_password():
 #========================================================
 submit_button = tk.Button(
     root,
-    text="Buscar",
+    text="Gerar Senha",
     command=validate_password,
     bg="#003366",
     fg="white",
